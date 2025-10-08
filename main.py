@@ -30,3 +30,7 @@ async def generate_song(req: GenerateRequest):
     audio_url = "https://example.com/audio/mock.mp3"
 
     return {"lyrics": lyrics, "audio_url": audio_url}
+    
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)
