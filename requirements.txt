@@ -1,8 +1,4 @@
 fastapi
 uvicorn
-pydantic
-openai
-torch
-torchaudio
-transformers
-accelerate
+openai==0.28
+pydantic==1.10.13
