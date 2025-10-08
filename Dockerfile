@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8080
 
 # Start server
-CMD ["python", "main.py"]
+CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8080"]
