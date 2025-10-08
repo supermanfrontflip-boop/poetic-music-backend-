@@ -13,6 +13,7 @@ COPY . .
 
 # Expose port for Railway
 EXPOSE 8080
+CMD ["node", "server.js"]
 
 # Start server
 CMD ["python", "main.py", "--host", "0.0.0.0", "--port", "8080"]
