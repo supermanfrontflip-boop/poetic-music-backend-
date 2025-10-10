@@ -1,44 +1,35 @@
-Ifrom fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import os
-import openai
 
-app = FastAPI()
+# Create FastAPI app
+app = FastAPI(
+    title="Extraordinary Healing API",
+    description="A simple FastAPI service deployed on Railway",
+    version="1.0.0",
+)
 
-# Get OpenAI API key from environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# Allow all origins (optional, but useful for testing)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-class GenerateRequest(BaseModel):
-    poem: str
-    style: str = "default"
-
+# Root endpoint
 @app.get("/")
 def read_root():
-    return {"message": "Poetic Music Backend is running!"}
+    return {"message": "Welcome to the Extraordinary Healing API!"}
 
-@app.post("/generate")
-async def generate_song(req: GenerateRequest):
-    """
-    Takes a poem and a style, returns generated song lyrics (mocked for now).
-    """
-    # Create the prompt
-    prompt = f"Turn this poem into song lyrics in the style of {req.style}:\n{req.poem}"
+# Example endpoint
+@app.get("/hello/{name}")
+def say_hello(name: str):
+    return {"message": f"Hello, {name}! You’re visiting from Railway!"}
 
-    # Generate lyrics using OpenAI
-    try:
-        completion = openai.ChatCompletion.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}]
-        )
-        lyrics = completion["choices"][0]["message"]["content"]
-    except Exception as e:
-        lyrics = f"Error generating lyrics: {str(e)}"
-
-    # Mock audio URL (you can replace later)
-    audio_url = "https://example.com/audio/mock.mp3"
-
-    return {"lyrics": lyrics, "audio_url": audio_url}
-
+# For local debugging
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8080)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
