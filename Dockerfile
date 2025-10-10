@@ -1,20 +1,20 @@
-# Use official Python runtime as base image
+# Use the official lightweight Python image
 FROM python:3.11-slim
 
 # Set working directory
 WORKDIR /app
 
-# Copy requirements first (for caching)
+# Copy dependency list
 COPY requirements.txt .
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
+# Copy all source files
 COPY . .
 
-# Expose port
+# Expose port (Railway sets PORT dynamically)
 EXPOSE 8000
 
-# Run the app
-CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}"]
+# Run the app (expand environment variable properly)
+CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000}
