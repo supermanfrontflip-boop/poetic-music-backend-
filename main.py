@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+Ifrom fastapi import FastAPI
 from pydantic import BaseModel
 import os
 import openai
