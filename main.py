@@ -9,7 +9,7 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Allow all origins (optional, but useful for testing)
+# Allow all origins (for testing or frontend access)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -23,12 +23,17 @@ app.add_middleware(
 def read_root():
     return {"message": "Welcome to the Extraordinary Healing API!"}
 
-# Example endpoint
+# Example hello endpoint
 @app.get("/hello/{name}")
 def say_hello(name: str):
     return {"message": f"Hello, {name}! You’re visiting from Railway!"}
 
-# For local debugging
+# Health check endpoint
+@app.get("/health")
+def health_check():
+    return {"status": "ok"}
+
+# Main entrypoint (for local & Railway)
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
